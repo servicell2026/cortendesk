@@ -165,5 +165,10 @@ Route::middleware('auth')->group(function () {
     // could edit roles could grant themselves anything.
     Route::middleware('admin')->group(function () {
         Route::view('/roles', 'roles.index')->name('roles');
+
+        // Per-account enrollment keys and the custom client builder. Both hand
+        // out something that puts machines into an account, so super-admin only.
+        Route::view('/enrollment-keys', 'enrollment-keys.index')->name('enrollment-keys');
+        Route::view('/client-builder', 'client-builder.index')->name('client-builder');
     });
 });

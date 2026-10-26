@@ -46,7 +46,9 @@ class ClientDownloadController extends Controller
         // Route-model binding does not know about the scope, and an
         // unpublished build must be a 404 rather than a 403 — an outsider
         // learns nothing about what is staged.
-        abort_unless($download->is_published, 404);
+        // A signed-in operator may also fetch an unpublished one: builds made
+        // for a single customer (with an enrollment key) are never published.
+        abort_unless($download->is_published || (bool) auth()->user()?->consoleAllows('setting', 'r'), 404);
 
         $disk = Storage::disk(ClientDownload::DISK);
 

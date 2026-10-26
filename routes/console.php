@@ -37,3 +37,6 @@ Schedule::command('cortendesk:check-device-notifications')->everyMinute()->witho
 
 // Proves the scheduler is alive, for the diagnostics page.
 Schedule::command('cortendesk:diagnostics-heartbeat')->everyMinute()->withoutOverlapping(10, $releaseOnSignals);
+
+// Client Builder: start queued builds, collect finished ones from GitHub.
+Schedule::command('cortendesk:poll-client-builds')->everyMinute()->withoutOverlapping(30, $releaseOnSignals);

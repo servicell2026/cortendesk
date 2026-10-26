@@ -9,6 +9,7 @@ use App\Models\Device;
 use App\Models\Strategy;
 use App\Services\AppriseNotifications;
 use App\Services\DeviceEnrollment;
+use App\Services\KeyEnrollment;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -143,6 +144,10 @@ class SyncController extends Controller
             'last_online_ip' => $request->ip(),
         ];
 
+        // A custom client build may carry an enrollment key; a valid one puts
+        // the device straight into its owner's account, approved.
+        $enrollmentKey = KeyEnrollment::presented($request->all());
+
         if ($device === null) {
             // Deployment approval gate (PLAN B3): when enabled, a first-seen
             // id+uuid is quarantined as 'pending' — registered but excluded from
@@ -157,7 +162,10 @@ class SyncController extends Controller
             // update, so later heartbeats cannot rewrite history (issue #46).
             $attributes['registered_ip'] = $request->ip();
 
+            $attributes = array_merge($attributes, KeyEnrollment::attributesForNew($enrollmentKey));
+
             $device = Device::create(['rustdesk_id' => $id] + DeviceEnrollment::defaultsForNew($attributes));
+            KeyEnrollment::apply($device, $enrollmentKey, $request->ip());
 
             // The client may already be signed in to this console (the user
             // signed in before the first heartbeat landed): that counts as
@@ -175,6 +183,7 @@ class SyncController extends Controller
             }
         } else {
             $device->update($attributes);
+            KeyEnrollment::apply($device, $enrollmentKey, $request->ip());
             CheckDeviceNotifications::reportOnline($device, app(AppriseNotifications::class));
         }
 

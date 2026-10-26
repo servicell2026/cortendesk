@@ -69,6 +69,7 @@ class BackupService
         'settings' => ['value'],
         'users' => ['totp_secret'],
         'address_book_entries' => ['password_enc'],
+        'enrollment_keys' => ['token_enc'],
     ];
 
     public const RUSTDESK_FILES = ['id_ed25519', 'id_ed25519.pub', 'db_v2.sqlite3'];

@@ -108,6 +108,15 @@
                 </li>
             @endif
 
+            @if ($canRoles)
+                <li class="rd-nav-item {{ request()->routeIs('enrollment-keys') ? 'rd-current' : '' }}">
+                    <a href="{{ route('enrollment-keys') }}" class="rd-nav-link {{ request()->routeIs('enrollment-keys') ? 'active' : '' }}">
+                        <i class="ri-key-line"></i>
+                        <span> Enrollment Keys </span>
+                    </a>
+                </li>
+            @endif
+
             @if ($canStrategies)
                 <li class="rd-nav-item {{ request()->routeIs('strategies') ? 'rd-current' : '' }}">
                     <a href="{{ route('strategies') }}" class="rd-nav-link {{ request()->routeIs('strategies') ? 'active' : '' }}">
@@ -163,6 +172,15 @@
                         <span> Client Downloads </span>
                     </a>
                 </li>
+
+                @if ($canRoles)
+                    <li class="rd-nav-item {{ request()->routeIs('client-builder') ? 'rd-current' : '' }}">
+                        <a href="{{ route('client-builder') }}" class="rd-nav-link {{ request()->routeIs('client-builder') ? 'active' : '' }}">
+                            <i class="ri-hammer-line"></i>
+                            <span> Client Builder </span>
+                        </a>
+                    </li>
+                @endif
 
                 @php
                     $rdgenUrl = \App\Models\Setting::get('rdgen_url', config('cortendesk.rdgen_url'));

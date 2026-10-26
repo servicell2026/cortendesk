@@ -105,6 +105,10 @@ return [
     */
     'rdgen_url' => env('CORTENDESK_RDGEN_URL', 'https://rdgen.crayoneater.org'),
 
+    // Client Builder: the rdgen fork (owner/name) whose Actions build custom
+    // clients. Settings on the Client Builder page override it.
+    'builder_repo' => env('CORTENDESK_BUILDER_REPO', ''),
+
     /*
     |--------------------------------------------------------------------------
     | Client URL scheme

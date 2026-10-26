@@ -44,7 +44,7 @@
                             @endif
                         </td>
                         <td>
-                            <span class="rd-mono fs-13">{{ $download->original_name }}</span>
+                            <a class="rd-mono fs-13" href="{{ route('downloads.show', $download) }}" title="Download">{{ $download->original_name }}</a>
                             @unless ($download->fileExists())
                                 {{-- The bytes live in the /data volume; a row without them
                                      means the volume was replaced, not that the row is wrong. --}}

@@ -54,6 +54,7 @@ class Device extends Model
         'note',
         'user_id',
         'device_group_id',
+        'enrollment_key_id',
         'last_online_at',
         'last_online_ip',
         'registered_ip',
@@ -98,6 +99,12 @@ class Device extends Model
     public function group(): BelongsTo
     {
         return $this->belongsTo(DeviceGroup::class, 'device_group_id');
+    }
+
+    /** The enrollment key this device arrived with, if any. */
+    public function enrollmentKey(): BelongsTo
+    {
+        return $this->belongsTo(EnrollmentKey::class);
     }
 
     /** The strategy currently in force for this device (cached resolution). */
